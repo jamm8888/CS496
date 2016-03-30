@@ -10,7 +10,7 @@ class MainPage(webapp2.RequestHandler):
 			user = users.get_current_user()
 
 			if user:
-				newuri = ('%sguestbook' % self.request.uri)
+				newuri = ('%s' % self.request.uri)
 				self.redirect(newuri)
 			else:
 				self.redirect(users.create_login_url(self.request.uri))
