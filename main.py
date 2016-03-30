@@ -10,9 +10,8 @@ class MainPage(webapp2.RequestHandler):
 			user = users.get_current_user()
 
 			if user:
-				self.response.headers['Content-Type'] = 'text/plain; charset=utf-8'
-				self.response.write('Hello You person, ' + user.nickname())
-				self.response.write(users.create_logout_url('/'))
+				newuri = ('%sguestbook' % self.request.uri)
+				self.redirect(newuri)
 			else:
 				self.redirect(users.create_login_url(self.request.uri))
 
