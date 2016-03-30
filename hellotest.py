@@ -2,10 +2,10 @@ from google.appengine.api import users
 
 import webapp2
 
+
 class MainPage(webapp2.RequestHandler):
 
 		def get(self):
-
 			#Check if the user has an active account session
 			user = users.get_current_user()
 
