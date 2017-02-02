@@ -1,0 +1,32 @@
+{% macro admin_menu() %}
+	<div class="row">
+	<div class="col-md-3 col-sm-2">
+		<div class="panel panel-default">
+		  	<div class="panel-heading">
+		    	<h3 class="panel-title">Product</h3>
+		  	</div>
+		  	<div class="panel-body">
+		  		<ul class="nav nav-pills nav-stacked">
+		  			<li><a href="/admin?paction=view&type=product">View Products</a></li>
+               	 	<li><a href="/admin?paction=add&type=product">Add Products</a></li>
+                	<li><a href="/admin?paction=edit&type=product">Edit Products</a></li>
+				</ul>
+		  	</div>
+		</div>
+	</div>
+	<div class="col-sm-offset-1 col-md-3 col-sm-2">
+		<div class="panel panel-default">
+		  	<div class="panel-heading">
+		    	<h3 class="panel-title">Category</h3>
+		  	</div>
+		  	<div class="panel-body">
+		  		<ul class="nav nav-pills nav-stacked">
+			  	    <li><a href="/admin?paction=view&type=category">View Categories</a></li>
+	                <li><a href="/admin?paction=add&type=category">Add Categories</a></li>
+	                <li><a href="/admin?paction=edit&type=category">Edit Categories</a></li>
+	            </ul>
+		  	</div>
+		</div>
+	</div>
+	</div>
+{% endmacro %}

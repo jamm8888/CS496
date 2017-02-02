@@ -1,0 +1,137 @@
+{% extends "admin.html" %}
+{% from "product/macros.html" import view_product with context %}
+{% block pageHeader %}
+  	Product: {{ pageaction }}
+{% endblock %}
+{% block content %}
+	{% if pageaction == 'add' or (pageaction == 'edit' and product.key) %}
+		{% if categories|length > 0 or pageaction == 'edit' %}
+			<div class="panel panel-default">
+			  	<div class="panel-heading">
+			    	<h3 class="panel-title">Product</h3>
+			  	</div>
+			  	<div class="panel-body">
+			  		<form action="{{ formpost }}" method="post">
+			  			<input type="hidden" name="action" value="{{ formaction }}">
+			  			{% if pageaction == edit %}
+			  			<input type="hidden" name="key" value="{{ product.key.urlsafe() }}">
+			  			{% endif %}
+			  			<div class="form-group row">
+			    			<label for="product-sku" class="col-sm-2 form-control-label">SKU</label>
+			    			<div class="col-sm-10">
+			      				<input type="text" class="form-control" id="product-sku" name="product-sku" placeholder="Name" value="{% if product %}{{ product.sku }}{% endif %}">
+			      				{% if prodskuerror %}
+								<span class="label label-danger">{{ prodskuerror }}</span>	
+								{% else %}
+								<span class="label label-info">Info</span><small class="text-muted"> Product Sku is unique</small>
+								{% endif %}
+			    			</div>
+			  			</div>
+					  	<div class="form-group row">
+					    	<label for="product-name" class="col-sm-2 form-control-label">Name</label>
+					    	<div class="col-sm-10">
+					      		<input type="text" class="form-control" id="product-name" name="product-name" placeholder="Name" value="{% if product %}{{ product.name }}{% endif %}">
+					      		{% if prodnameerror %}
+								<span class="label label-danger">{{ prodnameerror }}</span>	
+								{% else %}
+								<span class="label label-info">Info</span><small class="text-muted"> Product Name can consist of letters and numbers</small>
+								{% endif %}
+					    	</div>
+					  	</div>
+			  			<div class="form-group row">
+			    			<label for="product-description" class="col-sm-2 form-control-label">Description</label>
+			    			<div class="col-sm-10">
+			    				<textarea class="form-control" id="product-desc" name="product-desc" placeholder="Description of product" rows="3">{% if product %}{{ product.description }}{% endif %}</textarea>
+			    				{% if proddescerror %}
+								<span class="label label-danger">{{ proddescerror }}</span>	
+								{% else %}
+								<span class="label label-info">Info</span><small class="text-muted"> Describe the product</small>
+								{% endif %}
+			    			</div>
+			  			</div>
+			   			<div class="form-group row">
+			    			<label for="product-name" class="col-sm-2 form-control-label">Cost</label>
+			    			<div class="col-sm-10">
+			      				<input type="number" step="0.01" class="form-control" id="product-cost" name="product-cost" placeholder="0.00" value="{% if product and product.cost %}{{ product.cost }}{% endif %}">
+			        			{% if prodcosterror %}
+								<span class="label label-danger">{{ prodcosterror }}</span>	
+								{% else %}
+								<span class="label label-info">Info</span><small class="text-muted"> Sale Cost of product</small>
+								{% endif %}
+			    			</div>
+			  			</div>
+			  			<div class="form-group row">
+			    			<label class="col-sm-2">Associated Categories</label>
+			    			<div class="col-sm-10">
+			        			{% for c in categories %}
+			        			<p>
+								<label>  
+									<input type="checkbox" name="categories[]" value="{{ c.key }}" {% if c.checked %}checked="{{ c.checked }}" {% endif %}> {{ c.name }}
+								</label>
+								</p>
+								{% endfor %}
+
+								{% if prodcaterror %}
+								<p><span class="label label-danger">{{ prodcaterror }}</span></p>
+								{% else %}
+								<p><span class="label label-info">Info</span><small class="text-muted"> Each product needs to be associated with at least one category</small></p>
+								{% endif %}
+							</div>
+			  			</div>
+			    		<div class="form-group row">
+			    			<label class="col-sm-2">Enable</label>
+			    			<div class="col-sm-10">
+			      				<div class="radio">
+			        				<label>
+			          					<input type="radio" name="product-active" id="product-active1" value="True" {{ prodacttrue }}>
+			          					Enabled 
+			        				</label>
+			      				</div>
+			      				<div class="radio">
+			        				<label>
+			          					<input type="radio" name="product-active" id="product-active2" value="False" {{ prodactfalse }}>
+			          					Disabled 
+			        				</label>
+			       				</div>
+			        			{% if prodactiveerror %}
+								<span class="label label-danger">{{ prodactiveerror }}</span>	
+								{% else %}
+								<span class="label label-info">Info</span><small class="text-muted"> Enabled makes products active</small>
+								{% endif %}
+			    			</div>
+			 			</div>
+			  			<div class="form-group row">
+				  			<div class="container-fluid">
+							  	<div class="row">
+							  		<div class="col-sm-offset-2 col-md-5">
+							  			<input type="submit" class="btn btn-secondary pull-left" value="{{ button_text }}">
+							        </div>
+							        <div class="col-md-5 text-right">
+							    		<input type="reset" class="btn btn-secondary pull-right" value="Reset">
+							    	</div>
+							  	</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		{% else %}
+			<p>No categories exist in datastore</p>
+			<p><a href="/admin?paction=add&type=category">Add Category</a></p>
+		{% endif %}
+		{% if message %}
+		<section>
+		<h3>Result</h3>
+		<p class="important">{{ message }}</p>
+		</section>
+		{% endif %}
+		{% if products %}
+			<section>
+			<h2>View Product</h2>
+			{{ view_product(products) }}
+			</section>
+		{% endif %}
+	{% else %}
+	{{ view_product(product) }}
+	{% endif %}
+{% endblock %}

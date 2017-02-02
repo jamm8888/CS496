@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+	<head>
+		<title>Google App Engine - Time Display</title>
+	</head>
+	<body>
+		<div>
+		{% if user %}
+			<div>
+				Welcome {{ user.email() }}!
+			</div>
+			<div>
+				You can <a href="{{ logout_url }}">Logout</a>
+			</div>
+		{% else %}
+			<div>
+				Welcome!
+			</div>
+			<div>
+				<a href="{{ login_url }}">Sign in or register</a> to customize.
+			</div>
+
+		{% endif %}
+		</div>
+
+		<p>The time is: {{ current_time }}</p>
+		{% if user %}
+		<div>
+			<form action="/prefs" method="post">
+				<label for="tz_offset">
+					Timezone offset from UTC (can be negative):
+				</label>
+				<input name="tz_offset" id="tz_offset" type="text"
+					size="4" value="{{ userprefs.tz_offset }}" />
+				<input type="submit" value="Set" />
+			</form>
+		</div>
+		{% endif %}
+	</body>
+</html>

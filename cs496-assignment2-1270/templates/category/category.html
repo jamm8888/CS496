@@ -1,0 +1,81 @@
+{% extends "admin.html" %}
+{% from "category/macros.html" import view_category with context %}
+{% block pageHeader %}
+  	Category: {{ pageaction }}
+{% endblock %}
+{% block content %}
+	{% if pageaction == 'add' or (pageaction == 'edit' and category and category.key) %}
+  		<div class="panel panel-default">
+		  	<div class="panel-heading">
+		    	<h3 class="panel-title">Categories</h3>
+		  	</div>
+		  	<div class="panel-body">
+		  		<form action="{{ formpost }}" method="post">
+		  			<input type="hidden" name="action" value="{{ formaction }}">
+		  			{% if pageaction == edit %}
+		  			<input type="hidden" name="key" value="{{ category.key.urlsafe() }}">
+		  			{% endif %}
+		  			<div class="form-group row">
+		    			<label for="category-name" class="col-sm-2 form-control-label">Name</label>
+		    			<div class="col-sm-10">
+		      				<input type="text" class="form-control" id="category-name" name="category-name" placeholder="Name" value="{% if category %}{{ category.name }}{% endif %}">
+		      				{% if catnameerror %}
+							<span class="label label-danger">{{ catnameerror }}</span>	
+							{% else %}
+							<span class="label label-info">Info</span><small class="text-muted"> Category Names are unique</small>
+							{% endif %}
+		    			</div>
+		  			</div>		      			
+		  			<div class="form-group row">
+	    				<label class="col-sm-2">Enable</label>
+	    				<div class="col-sm-10">
+	      					<div class="radio">
+	       						<label>
+	          					<input type="radio" name="category-active" id="category-active1" value="True" {{ catacttrue }}>
+	          					Enabled 
+	        					</label>
+	     					</div>
+	      					<div class="radio">
+	        					<label>
+	          					<input type="radio" name="category-active" id="category-active2" value="False" {{ catactfalse }}>
+	         					Disabled 
+	        					</label>
+	       					</div>
+	        				{% if catactiveerror %}
+							<span class="label label-danger">{{ catactiveerror }}</span>	
+							{% else %}
+							<span class="label label-info">Info</span><small class="text-muted"> Enabled makes product active</small>
+							{% endif %}
+	    				</div>
+	 				</div>
+	 				<div class="form-group row">
+			  			<div class="container-fluid">
+						  	<div class="row">
+						  		<div class="col-sm-offset-2 col-md-5">
+						  			<input type="submit" class="btn btn-secondary pull-left" value="{{ button_text }}">
+						        </div>
+						        <div class="col-md-5 text-right">
+						    		<input type="reset" class="btn btn-secondary pull-right" value="Reset">
+						    	</div>
+						  	</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		{% if message %}
+		<section>
+		<h3>Result</h3>
+		<p class="important">{{ message }}</p>
+		</section>
+		{% endif %}
+		{% if categories %}
+		<section>
+		<h3>View Categories</h3>
+		{{ view_category(categories) }}
+		</section>
+		{% endif %}
+	{% else %}
+		{{ view_category(categories) }}
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+application: cs496-assignment2-1270
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /admin.*
+  script: main.app
+  secure: always
+
+- url: /css.*
+  mime_type: text/css
+  static_dir: includes/css
+
+- url: /.*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+- name: jinja2
+  version: "2.6"
+- name: markupsafe
+  version: "0.15"

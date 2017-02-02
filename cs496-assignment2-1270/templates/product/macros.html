@@ -1,0 +1,50 @@
+{% macro view_product(product) %}
+		<table class="table table-striped">
+	  		<thead>
+	    		<tr>
+			      <th>SKU</th>
+			      <th>Name</th>
+			      <th>Description</th>
+			      <th>Cost</th>
+			      <th>Categories</th>
+			      <th>Active</th>
+			      {% if pageaction == 'view' %}
+			      <th>Added</th>
+			      <th>Modified</th>
+			      {% endif %}
+			      {% if pageaction == 'edit' %}
+			      <th>Edit</th>
+			      {% endif %}
+	    		</tr>
+	  		</thead>
+	  		<tbody>
+	  		{% if product|length > 0 %}
+	  			{% for p in product %}
+					<tr>
+						<th scope="row" class="col-md-1">{{ p.product.sku }}</th>
+						<td class="col-md-2">{{ p.product.name }}</td>
+						<td class="col-md-3">{{ p.product.description }}</td>
+						<td class="col-md-1">{{ p.product.cost }}</td>
+						<td class="col-md-2">{% if p.categories|length > 0 %}
+				            {% for c in p.categories %}
+				                <p>{{ c.category.name }}</p>
+				            {% endfor %}
+				        {% endif %}</td>
+				        <td class="col-md-1">{{ p.product.active }}
+				        {% if pageaction == 'view' %}
+						<td class="col-md-1">{{ p.product.added }}</td>
+						<td class="col-md-1">{{ p.product.lastmodified }}</td>
+						{% endif %}
+						{% if pageaction == 'edit' or pageaction == 'add'%}
+			      		<td class="col-md-1"><a href="/admin?paction=edit&key={{ p.product.key.urlsafe() }}&type=product">Edit</a></td>
+			      		{% endif %}
+					</tr>
+				{% endfor %}
+			{% endif %}			    
+		  	</tbody>
+		</table>
+		{% if product|length == 0 %}
+			<p>No products in datastore</p>
+			<p><a href="/admin?paction=add&type=product">Add Product</a></p>
+		{% endif %}
+{% endmacro %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% from "macros.html" import admin_menu with context %}
+{% block title %}Admin{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block pageHeader %}Welcome to the admin dashboard{% endblock %}
+{% block content %}
+  {{ admin_menu() }}
+{% endblock %}
